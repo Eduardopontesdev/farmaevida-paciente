@@ -95,6 +95,30 @@ body[data-v=p] #pt{max-width:min(600px,100%)!important}
 @media print{html,body{height:auto!important;overflow:visible!important;display:block!important;background:#fff!important;padding:0!important}.hd,.pn,.noprint,.toast,#cl,.ov{display:none!important}.stage{display:block!important;padding:0!important}#pt{max-width:none!important;width:100%!important}.phone{border:0!important;border-radius:0!important;height:auto!important;overflow:visible!important;box-shadow:none!important;background:#fff!important}.sv{overflow:visible!important;height:auto!important;padding:0!important}.ms{border:0!important;padding:0!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.mr,.bx,.tp{break-inside:avoid}}
 .rvb{background:#e8f4e8;color:#1c7a3e;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:12px;font-weight:700}.rvm{border-radius:8px;padding:4px 8px;margin-top:4px;font-size:11px}
 .lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin-top:6px}.lg select{border:1px solid #cfe3d1;border-radius:8px;padding:4px;background:#fff;color:#1d2b22;font:inherit}
+@media(min-width:900px){
+body[data-v=p] .stage{max-width:1280px}
+body[data-v=p] #pt{max-width:1180px!important}
+body[data-v=p] .phone{border:0!important;border-radius:20px!important;flex-direction:row-reverse!important}
+body[data-v=p] .pn{flex-direction:column;width:210px;flex:none;border-top:0;border-right:1px solid var(--line);padding:16px 10px;gap:4px;justify-content:flex-start}
+body[data-v=p] .pn button{flex:none;flex-direction:row;gap:12px;font-size:14px;padding:11px 14px;border-radius:12px;justify-content:flex-start;position:relative}
+body[data-v=p] .pn button.on{background:var(--gl)}
+body[data-v=p] .pn b{font-size:20px}
+body[data-v=p] .pn i{position:static;margin-left:auto}
+body[data-v=p] .sv{padding:28px 44px;font-size:15px}
+body[data-v=p] .sv>*{max-width:920px;margin-left:auto;margin-right:auto}
+body[data-v=p] .sv h2{font-size:28px;margin-bottom:12px}
+body[data-v=p] .sv h3{font-size:15px;margin:18px auto 8px}
+body[data-v=p] .sv .cd{padding:14px;font-size:15px}
+body[data-v=p] .sv .cd small{font-size:13px}
+body[data-v=p] .sv .tab{font-size:14px;padding:8px 16px}
+body[data-v=p] .sv .bt{font-size:15px;padding:14px}
+body[data-v=p] .sv .sm{font-size:13px;padding:8px 14px}
+body[data-v=p] .sv .ic{width:44px;height:44px;font-size:22px}
+body[data-v=p] .sv .ms{font-size:14px}
+body[data-v=p] .sv .mr>div{font-size:13px}
+body[data-v=p] .sv .cb{width:26px;height:26px}
+}
+@media print{body[data-v=c] #pt{display:none!important}body[data-v=c] #cl{display:block!important}body[data-v=c] .clinic{border:0!important;height:auto!important;overflow:visible!important;display:block!important}body[data-v=c] .ch,body[data-v=c] .ct,body[data-v=c] .cl,body[data-v=c] .thh,body[data-v=c] .tabs,body[data-v=c] .rvb,body[data-v=c] .cd.c{display:none!important}body[data-v=c] .cv{overflow:visible!important;padding:0!important;height:auto!important}body[data-v=c] .cht{display:block!important}}
 </style><script>document.write('<script src="supabase-config.js?t='+Date.now()+'"><\/script>')</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 </head><body data-v="p">
@@ -376,7 +400,7 @@ let det='<div class="emp">Selecione um paciente na lista.</div>';
 if(C.pp&&PAT[C.pp]){const p=PAT[C.pp],L=ml(C.pp).sort((a,b)=>(a.ts||0)-(b.ts||0));
 det=`<div class="thh"><button class="sm o bkc" onclick="C.pp=null;R()">‹ Pacientes</button><b>${esc(p.name)}</b><button class="sm o" onclick="C.cp='${C.pp}';C.tab='chat';R()">💬 Chat</button></div><div class="cd c" style="display:block"><small>CPF ${esc(fmtCpf(p.cpf))} · Médico(a): ${esc(p.medico||'—')} · Tel.: ${esc(p.tel||'—')}</small><br><small><b>Alergias:</b> ${esc(p.alergias||'—')}</small><br><small>Observações: ${esc(p.obs||'—')}</small></div>`
 +(p.revisao?`<div class="rvb">✔ Última revisão em ${new Date(p.revisao.ts).toLocaleDateString('pt-BR')}${p.revisao.nota?': '+esc(p.revisao.nota):''}</div>`:'')
-+(L.length?L.map(medCard).join('')+`<h3>Revisão da lista</h3><input id="rvn" ${IN} placeholder="Observação geral (opcional)" value="${esc(C.rvn||'')}" oninput="C.rvn=this.value"><button class="bt" onclick="revList('${C.pp}')">✔ Marcar lista como revisada</button>`:'<div class="emp">O paciente ainda não cadastrou medicamentos.</div>')}
++(L.length?`<div class="tabs"><button class="tab ${C.pv=='ficha'?'':'on'}" onclick="C.pv='rev';R()">Revisão</button><button class="tab ${C.pv=='ficha'?'on':''}" onclick="C.pv='ficha';R()">Ficha (tabela)</button></div>`+(C.pv=='ficha'?fichaRO(p,L):L.map(medCard).join('')+`<h3>Revisão da lista</h3><input id="rvn" ${IN} placeholder="Observação geral (opcional)" value="${esc(C.rvn||'')}" oninput="C.rvn=this.value"><button class="bt" onclick="revList('${C.pp}')">✔ Marcar lista como revisada</button>`):'<div class="emp">O paciente ainda não cadastrou medicamentos.</div>')}
 return `<div class="cht ${C.pp?'sel':''}"><div class="cl">${list}</div><div class="cth">${det}</div></div>`};
 
 /* ===== LEMBRETES DE MEDICAMENTOS NOS AVISOS ===== */
@@ -397,6 +421,13 @@ const L=(D.meds||[]).filter(x=>!x.prn&&slOf(x)[i]);if(!L.length)return;const txt
 S(()=>{D.notifs.unshift({id,m:txt,ts:Date.now(),by:'s',rm:1})});nw=txt});if(nw)sysFire(nw)}
 PS.av=()=>'<h2>🔔 Avisos</h2>'+(D.notifs.length?D.notifs.map(n=>`<div class="cd" ${n.rm?'style="background:var(--gl)"':''}><span class="ic">${n.rm?'⏰':'🔔'}</span><div class="t"><b>${esc(n.m)}</b><small>${tm(n.ts)}</small></div>${n.rm&&String(n.id).indexOf('rm-test')!=0?(n.done?'<span class="pl ok">✔ Tomado</span>':`<button class="sm" onclick="markTaken('${esc(n.id)}')">Já tomei</button>`):''}</div>`).join(''):'<div class="emp">Nenhum aviso ainda.</div>');
 if(ROLE=='p'){setInterval(remTick,30000);addEventListener('visibilitychange',()=>{if(!document.hidden)remTick()});setTimeout(remTick,4000)}
+
+/* ===== CLÍNICA: ficha em tabela (somente leitura) ===== */
+Object.assign(C,{pv:'rev'});
+function fichaRO(p,L){const row=m=>{const s=slOf(m);return `<div class="mr"><div class="nm"><b>${esc(m.n)}</b><small>${esc(m.ap||'')}</small></div><div class="pq">${esc(m.para||'')}</div>${m.prn?'<div class="prn">Somente quando necessário</div>':MPER.map((q,i)=>`<div class="sl s${i}" data-l="${q[0]}"><div class="cb ${s[i]?'on':''}">${s[i]?'✓':''}</div></div>`).join('')}<div class="cm">${esc(m.como||'')}${revHtml(m)}</div></div>`};
+return `<div class="ms" id="ms"><div class="ttl"><div class="br" style="font-size:20px">Farma <span style="color:#7aa84a">e</span> Vida<small style="display:block;font-family:Nunito;font-size:9px;letter-spacing:.15em;color:#5c6b61">FARMÁCIA CLÍNICA</small></div><div style="text-align:right"><h2>Meus medicamentos</h2><small style="color:#5c6b61">Ficha do paciente</small></div></div>
+<div class="fic"><label>Paciente: <b>${esc(p.name)}</b></label><label>CPF: <b>${esc(fmtCpf(p.cpf))}</b></label><label>Médico(a): <b>${esc(p.medico||'—')}</b></label><label>Telefone: <b>${esc(p.tel||'—')}</b></label><label>Alergias: <b>${esc(p.alergias||'—')}</b></label><label>Observações: <b>${esc(p.obs||'—')}</b></label></div>
+<div class="mh"><div>MEDICAMENTO<br><small>Nome e apresentação</small></div><div>PARA QUE SERVE?</div>${MPER.map((q,i)=>`<div class="s${i}">${q[0].toUpperCase()}<br><small>${q[1]}</small></div>`).join('')}<div>COMO USAR?<br><small>Dose e orientações</small></div></div>${L.map(row).join('')}</div><button class="bt noprint" onclick="try{window.print()}catch(e){toast('Impressão indisponível')}">🖨 Imprimir ficha</button>`}
 
 /* ===== SUPABASE multi-paciente ===== */
 const SUPA=window.SUPA_CONFIG||{url:'',key:''};
