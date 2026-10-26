@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Farma & Vida – Clínica</title>
+<title>Farma & Vida – Paciente</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#eef4ec;--sf:#fff;--tx:#1d2b22;--mut:#66756b;--g:#1c7a3e;--gl:#e3f2e5;--line:#dfe8df;--red:#c0392b;--or:#b86e00;--orl:#fdeedd;--bl:#2a5fb0;--bll:#e3eefc;--on:#fff;box-sizing:border-box}
@@ -44,7 +44,7 @@ h2{font-family:Fraunces,serif;font-size:20px;margin-bottom:8px}h3{font-size:13px
 .cd.c{background:var(--bg)}.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .emp{border:2px dashed var(--line);border-radius:14px;padding:18px;text-align:center;color:var(--mut)}
 @media(prefers-reduced-motion:reduce){.toast{transition:none}}
-@supports(height:100dvh){html,body{height:100dvh}}
+@supports(height:100dvh){html,body{height:100dvh}}@media(max-width:600px){body{padding:0!important}.hd{padding:6px 12px!important}.note{display:none}.stage{padding:0!important}#pt{max-width:none!important}.phone{border:0!important;border-radius:0!important;box-shadow:none!important}}
 
 html{-webkit-text-size-adjust:100%}img,svg{max-width:100%}
 .cd .t{min-width:0;overflow-wrap:anywhere}
@@ -122,11 +122,11 @@ body[data-v=p] .sv .cb{width:26px;height:26px}
 .alb{display:flex;gap:10px;align-items:flex-start;border-radius:14px;padding:12px;margin-bottom:10px;font-size:13px}.alb .t{flex:1;min-width:0}.alb .t b{display:block;font-size:14px;margin-bottom:2px}
 </style><script>document.write('<script src="supabase-config.js?t='+Date.now()+'"><\/script>')</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-</head><body data-v="c">
-<div class="hd"><div class="br">Farma <span style="color:#7aa84a">&amp;</span> <i>Vida</i></div><p class="note">Painel da <b>clínica</b>: pedidos, consultas, exames, fórmulas e mensagens dos pacientes aparecem aqui em tempo real.</p><span class="pl" id="sy">⚪ Só neste aparelho</span><button class="rs" onclick="clinicOut()">Sair</button></div>
+</head><body data-v="p">
+<div class="hd"><div class="br">Farma <span style="color:#7aa84a">&amp;</span> <i>Vida</i></div><p class="note">Aplicativo do <b>paciente</b>: seus pedidos, consultas e mensagens chegam à clínica em tempo real.</p><span class="pl" id="sy">⚪ Só neste aparelho</span></div>
 <div class="stage"><section class="pane" id="pt"><div class="phone"><div class="toast" id="ts" role="status"></div><div class="sv" id="pv"></div><nav class="pn" id="pn"></nav></div></section><section class="pane" id="cl"><div class="clinic"><div class="ch"><b>🏥 Painel da Clínica</b><span id="ck" style="font-size:12px;font-weight:700"></span></div><div class="ct" id="ct"></div><div class="cv" id="cv"></div></div></section></div>
 <script>
-const ROLE='c';let CUR,READY=false,LOADED=false,STAFF=false,UID=null,SB=null,BUSYJ='',CATL=[],CATDEF=true,EXG=[],EXP={},ALERTS=[],ALSEEN=null;const PAT={},SYNC={},BUSY={appts:[],labs:[]},L={e:'',p:'',err:''};
+const ROLE='p';let CUR,READY=false,LOADED=false,STAFF=false,UID=null,SB=null,BUSYJ='',CATL=[],CATDEF=true,EXG=[],EXP={},ALERTS=[],ALSEEN=null;const PAT={},SYNC={},BUSY={appts:[],labs:[]},L={e:'',p:'',err:''};
 const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,8),M=n=>'R$ '+n.toFixed(2).replace('.',','),br=d=>d.split('-').reverse().join('/'),tm=t=>new Date(t).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 const DEF=()=>({appts:[],orders:[],labs:[],notifs:[],profile:null,log:[],seen:1,manips:[],meds:[],acks:[]});
 let D;try{D=JSON.parse(localStorage.getItem('fvsim_'+ROLE))||DEF()}catch(e){D=DEF()}
@@ -225,7 +225,7 @@ $('#ct').innerHTML=[['painel','Painel'],['agenda','Agenda'],['pedidos','Pedidos'
 try{$('#cv').innerHTML=CS[C.tab]()}catch(e){$('#cv').innerHTML='<div class="emp">Erro ao exibir esta aba.</div>';console.error(e)}$('#cv').scrollTop=(C.tab=='chat'&&newMsg)?1e9:sc;if(P.tab=='ch'&&newMsg)$('#pv').scrollTop=1e9;if(ROLE=='p'&&READY&&P.tab=='ch'&&D.profile&&!CH.length&&!P.greeted){P.greeted=1;greet()}document.querySelectorAll('.clinic>.ov').forEach(e=>e.remove());if(ROLE=='c'&&!STAFF)$('.clinic').insertAdjacentHTML('beforeend',loginUI());else if(ROLE=='c'&&C.cf)$('.clinic').insertAdjacentHTML('beforeend',catFormUI());if(aid){const e=$('#'+aid);if(e){e.value=av;e.focus()}}lastCH=CH.length;$('#ck').textContent=ROLE=='c'?(Object.values(PAT).filter(Boolean).length+' paciente(s) cadastrado(s)'):(D.profile?'Paciente: '+D.profile.name+' · CPF '+fmtCpf(D.profile.cpf):'')}
 function reset(){D=DEF();save();if(DBX)CH.forEach(m=>DBX.collection('chat').doc(m.id).delete().catch(()=>{}));else{CH=[];try{localStorage.removeItem('fvch_'+ROLE)}catch(e){}}Object.assign(P,{tab:'home',cart:{},slot:'',ls:[],lslot:'',view:null});prevN=seenN=D.notifs.length;R()}
 addEventListener('storage',e=>{if(e.key=='fvsim_'+ROLE){try{D=JSON.parse(e.newValue)||DEF();R()}catch(x){}}});
-setV('c');
+setV('p');
 seenN=0;R();prevN=D.notifs.length;
 /* ===== V3: catálogo, serviços, exames, chat com assistente ===== */
 const EXCATS=['Coleta de materiais','Bioquímica','Hematologia','Imunologia e Sorologia','Microbiologia e Parasitologia','Uroanálise'];
