@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Farma & Vida – Paciente ver.10</title>
+<title>Farma & Vida – Paciente ver.9</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#eef4ec;--sf:#fff;--tx:#1d2b22;--mut:#66756b;--g:#1c7a3e;--gl:#e3f2e5;--line:#dfe8df;--red:#c0392b;--or:#b86e00;--orl:#fdeedd;--bl:#2a5fb0;--bll:#e3eefc;--on:#fff;box-sizing:border-box}
@@ -457,9 +457,9 @@ return `<div class="cd c" style="display:block"><b>📣 Novo alerta para todos o
 if(ROLE=='p')setInterval(()=>{const n=actAlerts().length;if(n!==window._aln){window._aln=n;R()}},30000);
 
 /* ===== FARMÁCIA CLÍNICA: vários serviços no mesmo horário ===== */
-const MULTI={fc:1,est:1,fito:1};
-for(const k in P.sv)P.sv[k].m=[];
-const togSvc=(k,id)=>{const st=P.sv[k];if(!st.m)st.m=[];st.m=st.m.includes(id)?st.m.filter(x=>x!=id):[...st.m,id];R()};
+const MULTI={fc:1};
+Object.assign(P.sv.fc,{m:[]});
+const togSvc=(k,id)=>{const st=P.sv[k];st.m=st.m.includes(id)?st.m.filter(x=>x!=id):[...st.m,id];R()};
 const durMin=d=>{const n=parseInt(String(d||''),10);return isNaN(n)?0:n};
 function svcBlock(k){const L=svcList(k),st=P.sv[k],multi=!!MULTI[k];if(!L.length)return '<div class="emp">Nenhum serviço disponível no momento.</div>';if(!st.m)st.m=[];if(!multi&&st.s>=L.length)st.s=0;
 const sel=multi?L.filter(x=>st.m.includes(x.id)):[L[st.s]||L[0]],tot=sel.reduce((t,x)=>t+(+x.price||0),0),mins=sel.reduce((t,x)=>t+durMin(x.dur),0),ds=days(),d=ds[st.d];let g='';
